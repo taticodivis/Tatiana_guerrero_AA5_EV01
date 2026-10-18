@@ -52,7 +52,7 @@ public class Run {
             }, "CRM-detener"));
             catalina.getMethod("setAwait", boolean.class).invoke(servidor, true);
             catalina.getMethod("load").invoke(servidor);
-            System.out.println("Abre http://localhost:" + config.getProperty("port") + "/crm/api/estado");
+            System.out.println("Abre http://localhost:" + config.getProperty("port") + "/crm/");
             System.out.println("Detener esta ejecucion de Run Java cierra el servidor.");
             catalina.getMethod("start").invoke(servidor);
         }
