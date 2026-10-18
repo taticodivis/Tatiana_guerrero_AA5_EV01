@@ -1,0 +1,12 @@
+/target/
+/data/
+*.log
+*.class
+*.war
+*.zip
+*.rar
+.idea/
+.vscode/*
+!.vscode/tasks.json
+!.vscode/settings.json
+!.vscode/extensions.json

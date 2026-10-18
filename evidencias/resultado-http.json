@@ -1,0 +1,143 @@
+﻿{
+    "fecha":  "2026-10-18T16:58:44.2134551-05:00",
+    "herramienta":  "PowerShell HttpClient (comprobacion previa; pendiente ejecutar en Postman)",
+    "baseUrl":  "http://localhost:8086/crm/api",
+    "resultados":  [
+                       {
+                           "prueba":  "01 - Estado",
+                           "esperado":  200,
+                           "recibido":  200,
+                           "codigo":  "API_DISPONIBLE",
+                           "correcto":  true,
+                           "respuesta":  "{\"ok\":true,\"codigo\":\"API_DISPONIBLE\",\"mensaje\":\"API Codivis disponible.\"}"
+                       },
+                       {
+                           "prueba":  "02 - Registrar usuario",
+                           "esperado":  201,
+                           "recibido":  201,
+                           "codigo":  "USUARIO_CREADO",
+                           "correcto":  true,
+                           "respuesta":  "{\"ok\":true,\"codigo\":\"USUARIO_CREADO\",\"mensaje\":\"Usuario registrado correctamente.\"}"
+                       },
+                       {
+                           "prueba":  "03 - Usuario duplicado",
+                           "esperado":  409,
+                           "recibido":  409,
+                           "codigo":  "USUARIO_DUPLICADO",
+                           "correcto":  true,
+                           "respuesta":  "{\"ok\":false,\"codigo\":\"USUARIO_DUPLICADO\",\"mensaje\":\"Ese usuario ya está registrado.\"}"
+                       },
+                       {
+                           "prueba":  "04 - Login correcto",
+                           "esperado":  200,
+                           "recibido":  200,
+                           "codigo":  "AUTENTICACION_CORRECTA",
+                           "correcto":  true,
+                           "respuesta":  "{\"ok\":true,\"codigo\":\"AUTENTICACION_CORRECTA\",\"mensaje\":\"Autenticacion satisfactoria.\"}"
+                       },
+                       {
+                           "prueba":  "05 - Clave incorrecta",
+                           "esperado":  401,
+                           "recibido":  401,
+                           "codigo":  "CREDENCIALES_INVALIDAS",
+                           "correcto":  true,
+                           "respuesta":  "{\"ok\":false,\"codigo\":\"CREDENCIALES_INVALIDAS\",\"mensaje\":\"Usuario o clave incorrectos.\"}"
+                       },
+                       {
+                           "prueba":  "06 - Usuario inexistente",
+                           "esperado":  401,
+                           "recibido":  401,
+                           "codigo":  "CREDENCIALES_INVALIDAS",
+                           "correcto":  true,
+                           "respuesta":  "{\"ok\":false,\"codigo\":\"CREDENCIALES_INVALIDAS\",\"mensaje\":\"Usuario o clave incorrectos.\"}"
+                       },
+                       {
+                           "prueba":  "07 - Login sin clave",
+                           "esperado":  400,
+                           "recibido":  400,
+                           "codigo":  "CAMPOS_OBLIGATORIOS",
+                           "correcto":  true,
+                           "respuesta":  "{\"ok\":false,\"codigo\":\"CAMPOS_OBLIGATORIOS\",\"mensaje\":\"Usuario y clave son obligatorios.\"}"
+                       },
+                       {
+                           "prueba":  "08 - Registro sin usuario",
+                           "esperado":  400,
+                           "recibido":  400,
+                           "codigo":  "CAMPOS_OBLIGATORIOS",
+                           "correcto":  true,
+                           "respuesta":  "{\"ok\":false,\"codigo\":\"CAMPOS_OBLIGATORIOS\",\"mensaje\":\"Usuario y clave son obligatorios.\"}"
+                       },
+                       {
+                           "prueba":  "09 - Clave corta",
+                           "esperado":  400,
+                           "recibido":  400,
+                           "codigo":  "DATOS_INVALIDOS",
+                           "correcto":  true,
+                           "respuesta":  "{\"ok\":false,\"codigo\":\"DATOS_INVALIDOS\",\"mensaje\":\"La contraseña debe tener entre 12 y 128 caracteres.\"}"
+                       },
+                       {
+                           "prueba":  "10 - Confirmacion diferente",
+                           "esperado":  400,
+                           "recibido":  400,
+                           "codigo":  "DATOS_INVALIDOS",
+                           "correcto":  true,
+                           "respuesta":  "{\"ok\":false,\"codigo\":\"DATOS_INVALIDOS\",\"mensaje\":\"Las contraseñas no coinciden.\"}"
+                       },
+                       {
+                           "prueba":  "11 - Usuario invalido",
+                           "esperado":  400,
+                           "recibido":  400,
+                           "codigo":  "DATOS_INVALIDOS",
+                           "correcto":  true,
+                           "respuesta":  "{\"ok\":false,\"codigo\":\"DATOS_INVALIDOS\",\"mensaje\":\"El usuario debe tener entre 3 y 40 caracteres: letras, números, punto, guion o guion bajo.\"}"
+                       },
+                       {
+                           "prueba":  "12 - GET en login",
+                           "esperado":  405,
+                           "recibido":  405,
+                           "codigo":  "METODO_NO_PERMITIDO",
+                           "correcto":  true,
+                           "respuesta":  "{\"ok\":false,\"codigo\":\"METODO_NO_PERMITIDO\",\"mensaje\":\"Metodo HTTP no permitido.\"}"
+                       },
+                       {
+                           "prueba":  "13 - GET en registro",
+                           "esperado":  405,
+                           "recibido":  405,
+                           "codigo":  "METODO_NO_PERMITIDO",
+                           "correcto":  true,
+                           "respuesta":  "{\"ok\":false,\"codigo\":\"METODO_NO_PERMITIDO\",\"mensaje\":\"Metodo HTTP no permitido.\"}"
+                       },
+                       {
+                           "prueba":  "14 - JSON no admitido",
+                           "esperado":  415,
+                           "recibido":  415,
+                           "codigo":  "FORMATO_NO_ADMITIDO",
+                           "correcto":  true,
+                           "respuesta":  "{\"ok\":false,\"codigo\":\"FORMATO_NO_ADMITIDO\",\"mensaje\":\"Usa application/x-www-form-urlencoded.\"}"
+                       },
+                       {
+                           "prueba":  "15 - POST en estado",
+                           "esperado":  405,
+                           "recibido":  405,
+                           "codigo":  "METODO_NO_PERMITIDO",
+                           "correcto":  true,
+                           "respuesta":  "{\"ok\":false,\"codigo\":\"METODO_NO_PERMITIDO\",\"mensaje\":\"Metodo HTTP no permitido.\"}"
+                       },
+                       {
+                           "prueba":  "16 - Registro sin confirmacion",
+                           "esperado":  400,
+                           "recibido":  400,
+                           "codigo":  "DATOS_INVALIDOS",
+                           "correcto":  true,
+                           "respuesta":  "{\"ok\":false,\"codigo\":\"DATOS_INVALIDOS\",\"mensaje\":\"Las contraseñas no coinciden.\"}"
+                       },
+                       {
+                           "prueba":  "17 - Login normaliza usuario",
+                           "esperado":  200,
+                           "recibido":  200,
+                           "codigo":  "AUTENTICACION_CORRECTA",
+                           "correcto":  true,
+                           "respuesta":  "{\"ok\":true,\"codigo\":\"AUTENTICACION_CORRECTA\",\"mensaje\":\"Autenticacion satisfactoria.\"}"
+                       }
+                   ]
+}

@@ -1,0 +1,728 @@
+{
+  "info": {
+    "name": "Codivis API - AA5-EV01",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": "Ejecutar completa y en orden. Datos nuevos por ejecucion. Body x-www-form-urlencoded; respuestas JSON. Login solo verifica credenciales, no emite token ni crea sesion."
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:8086/crm/api"
+    },
+    {
+      "key": "usuario",
+      "value": ""
+    },
+    {
+      "key": "clave",
+      "value": "PruebaCodivis2026!"
+    }
+  ],
+  "event": [
+    {
+      "listen": "prerequest",
+      "script": {
+        "type": "text/javascript",
+        "exec": [
+          "if (pm.info.requestName === '01 - Estado') {",
+          "  const id = pm.variables.replaceIn('{{$guid}}').replace(/-/g, '').slice(0, 20);",
+          "  pm.collectionVariables.set('usuario', 'prueba_' + id);",
+          "  pm.collectionVariables.set('otro', 'otro_' + id);",
+          "  pm.collectionVariables.set('inexistente', 'no_' + id);",
+          "}"
+        ]
+      }
+    }
+  ],
+  "item": [
+    {
+      "name": "01 - Estado",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": "{{baseUrl}}/estado"
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"HTTP 200\", () => pm.response.to.have.status(200));",
+              "pm.test(\"Respuesta JSON y contrato\", () => {",
+              "  pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"application/json\");",
+              "  const data = pm.response.json();",
+              "  pm.expect(data.codigo).to.eql(\"API_DISPONIBLE\");",
+              "  pm.expect(data.ok).to.eql(true);",
+              "  pm.expect(data.mensaje).to.be.a(\"string\").and.not.empty;",
+              "  pm.expect(data).not.to.have.property(\"clave\");",
+              "  pm.expect(data).not.to.have.property(\"hash\");",
+              "});"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "02 - Registrar usuario",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "url": "{{baseUrl}}/registro",
+        "body": {
+          "mode": "urlencoded",
+          "urlencoded": [
+            {
+              "key": "usuario",
+              "value": "{{usuario}}",
+              "type": "text"
+            },
+            {
+              "key": "clave",
+              "value": "{{clave}}",
+              "type": "text"
+            },
+            {
+              "key": "confirmacion",
+              "value": "{{clave}}",
+              "type": "text"
+            }
+          ]
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"HTTP 201\", () => pm.response.to.have.status(201));",
+              "pm.test(\"Respuesta JSON y contrato\", () => {",
+              "  pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"application/json\");",
+              "  const data = pm.response.json();",
+              "  pm.expect(data.codigo).to.eql(\"USUARIO_CREADO\");",
+              "  pm.expect(data.ok).to.eql(true);",
+              "  pm.expect(data.mensaje).to.be.a(\"string\").and.not.empty;",
+              "  pm.expect(data).not.to.have.property(\"clave\");",
+              "  pm.expect(data).not.to.have.property(\"hash\");",
+              "});"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "03 - Usuario duplicado",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "url": "{{baseUrl}}/registro",
+        "body": {
+          "mode": "urlencoded",
+          "urlencoded": [
+            {
+              "key": "usuario",
+              "value": "{{usuario}}",
+              "type": "text"
+            },
+            {
+              "key": "clave",
+              "value": "{{clave}}",
+              "type": "text"
+            },
+            {
+              "key": "confirmacion",
+              "value": "{{clave}}",
+              "type": "text"
+            }
+          ]
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"HTTP 409\", () => pm.response.to.have.status(409));",
+              "pm.test(\"Respuesta JSON y contrato\", () => {",
+              "  pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"application/json\");",
+              "  const data = pm.response.json();",
+              "  pm.expect(data.codigo).to.eql(\"USUARIO_DUPLICADO\");",
+              "  pm.expect(data.ok).to.eql(false);",
+              "  pm.expect(data.mensaje).to.be.a(\"string\").and.not.empty;",
+              "  pm.expect(data).not.to.have.property(\"clave\");",
+              "  pm.expect(data).not.to.have.property(\"hash\");",
+              "});"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "04 - Login correcto",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "url": "{{baseUrl}}/login",
+        "body": {
+          "mode": "urlencoded",
+          "urlencoded": [
+            {
+              "key": "usuario",
+              "value": "{{usuario}}",
+              "type": "text"
+            },
+            {
+              "key": "clave",
+              "value": "{{clave}}",
+              "type": "text"
+            }
+          ]
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"HTTP 200\", () => pm.response.to.have.status(200));",
+              "pm.test(\"Respuesta JSON y contrato\", () => {",
+              "  pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"application/json\");",
+              "  const data = pm.response.json();",
+              "  pm.expect(data.codigo).to.eql(\"AUTENTICACION_CORRECTA\");",
+              "  pm.expect(data.ok).to.eql(true);",
+              "  pm.expect(data.mensaje).to.be.a(\"string\").and.not.empty;",
+              "  pm.expect(data).not.to.have.property(\"clave\");",
+              "  pm.expect(data).not.to.have.property(\"hash\");",
+              "});"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "05 - Clave incorrecta",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "url": "{{baseUrl}}/login",
+        "body": {
+          "mode": "urlencoded",
+          "urlencoded": [
+            {
+              "key": "usuario",
+              "value": "{{usuario}}",
+              "type": "text"
+            },
+            {
+              "key": "clave",
+              "value": "Incorrecta123456",
+              "type": "text"
+            }
+          ]
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"HTTP 401\", () => pm.response.to.have.status(401));",
+              "pm.test(\"Respuesta JSON y contrato\", () => {",
+              "  pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"application/json\");",
+              "  const data = pm.response.json();",
+              "  pm.expect(data.codigo).to.eql(\"CREDENCIALES_INVALIDAS\");",
+              "  pm.expect(data.ok).to.eql(false);",
+              "  pm.expect(data.mensaje).to.be.a(\"string\").and.not.empty;",
+              "  pm.expect(data).not.to.have.property(\"clave\");",
+              "  pm.expect(data).not.to.have.property(\"hash\");",
+              "});"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "06 - Usuario inexistente",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "url": "{{baseUrl}}/login",
+        "body": {
+          "mode": "urlencoded",
+          "urlencoded": [
+            {
+              "key": "usuario",
+              "value": "{{inexistente}}",
+              "type": "text"
+            },
+            {
+              "key": "clave",
+              "value": "{{clave}}",
+              "type": "text"
+            }
+          ]
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"HTTP 401\", () => pm.response.to.have.status(401));",
+              "pm.test(\"Respuesta JSON y contrato\", () => {",
+              "  pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"application/json\");",
+              "  const data = pm.response.json();",
+              "  pm.expect(data.codigo).to.eql(\"CREDENCIALES_INVALIDAS\");",
+              "  pm.expect(data.ok).to.eql(false);",
+              "  pm.expect(data.mensaje).to.be.a(\"string\").and.not.empty;",
+              "  pm.expect(data).not.to.have.property(\"clave\");",
+              "  pm.expect(data).not.to.have.property(\"hash\");",
+              "});"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "07 - Login sin clave",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "url": "{{baseUrl}}/login",
+        "body": {
+          "mode": "urlencoded",
+          "urlencoded": [
+            {
+              "key": "usuario",
+              "value": "{{usuario}}",
+              "type": "text"
+            }
+          ]
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"HTTP 400\", () => pm.response.to.have.status(400));",
+              "pm.test(\"Respuesta JSON y contrato\", () => {",
+              "  pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"application/json\");",
+              "  const data = pm.response.json();",
+              "  pm.expect(data.codigo).to.eql(\"CAMPOS_OBLIGATORIOS\");",
+              "  pm.expect(data.ok).to.eql(false);",
+              "  pm.expect(data.mensaje).to.be.a(\"string\").and.not.empty;",
+              "  pm.expect(data).not.to.have.property(\"clave\");",
+              "  pm.expect(data).not.to.have.property(\"hash\");",
+              "});"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "08 - Registro sin usuario",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "url": "{{baseUrl}}/registro",
+        "body": {
+          "mode": "urlencoded",
+          "urlencoded": [
+            {
+              "key": "clave",
+              "value": "{{clave}}",
+              "type": "text"
+            },
+            {
+              "key": "confirmacion",
+              "value": "{{clave}}",
+              "type": "text"
+            }
+          ]
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"HTTP 400\", () => pm.response.to.have.status(400));",
+              "pm.test(\"Respuesta JSON y contrato\", () => {",
+              "  pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"application/json\");",
+              "  const data = pm.response.json();",
+              "  pm.expect(data.codigo).to.eql(\"CAMPOS_OBLIGATORIOS\");",
+              "  pm.expect(data.ok).to.eql(false);",
+              "  pm.expect(data.mensaje).to.be.a(\"string\").and.not.empty;",
+              "  pm.expect(data).not.to.have.property(\"clave\");",
+              "  pm.expect(data).not.to.have.property(\"hash\");",
+              "});"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "09 - Clave corta",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "url": "{{baseUrl}}/registro",
+        "body": {
+          "mode": "urlencoded",
+          "urlencoded": [
+            {
+              "key": "usuario",
+              "value": "{{otro}}",
+              "type": "text"
+            },
+            {
+              "key": "clave",
+              "value": "123",
+              "type": "text"
+            },
+            {
+              "key": "confirmacion",
+              "value": "123",
+              "type": "text"
+            }
+          ]
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"HTTP 400\", () => pm.response.to.have.status(400));",
+              "pm.test(\"Respuesta JSON y contrato\", () => {",
+              "  pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"application/json\");",
+              "  const data = pm.response.json();",
+              "  pm.expect(data.codigo).to.eql(\"DATOS_INVALIDOS\");",
+              "  pm.expect(data.ok).to.eql(false);",
+              "  pm.expect(data.mensaje).to.be.a(\"string\").and.not.empty;",
+              "  pm.expect(data).not.to.have.property(\"clave\");",
+              "  pm.expect(data).not.to.have.property(\"hash\");",
+              "});"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "10 - Confirmacion diferente",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "url": "{{baseUrl}}/registro",
+        "body": {
+          "mode": "urlencoded",
+          "urlencoded": [
+            {
+              "key": "usuario",
+              "value": "{{otro}}",
+              "type": "text"
+            },
+            {
+              "key": "clave",
+              "value": "{{clave}}",
+              "type": "text"
+            },
+            {
+              "key": "confirmacion",
+              "value": "OtraClave12345",
+              "type": "text"
+            }
+          ]
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"HTTP 400\", () => pm.response.to.have.status(400));",
+              "pm.test(\"Respuesta JSON y contrato\", () => {",
+              "  pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"application/json\");",
+              "  const data = pm.response.json();",
+              "  pm.expect(data.codigo).to.eql(\"DATOS_INVALIDOS\");",
+              "  pm.expect(data.ok).to.eql(false);",
+              "  pm.expect(data.mensaje).to.be.a(\"string\").and.not.empty;",
+              "  pm.expect(data).not.to.have.property(\"clave\");",
+              "  pm.expect(data).not.to.have.property(\"hash\");",
+              "});"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "11 - Usuario invalido",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "url": "{{baseUrl}}/registro",
+        "body": {
+          "mode": "urlencoded",
+          "urlencoded": [
+            {
+              "key": "usuario",
+              "value": "nombre con espacios",
+              "type": "text"
+            },
+            {
+              "key": "clave",
+              "value": "{{clave}}",
+              "type": "text"
+            },
+            {
+              "key": "confirmacion",
+              "value": "{{clave}}",
+              "type": "text"
+            }
+          ]
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"HTTP 400\", () => pm.response.to.have.status(400));",
+              "pm.test(\"Respuesta JSON y contrato\", () => {",
+              "  pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"application/json\");",
+              "  const data = pm.response.json();",
+              "  pm.expect(data.codigo).to.eql(\"DATOS_INVALIDOS\");",
+              "  pm.expect(data.ok).to.eql(false);",
+              "  pm.expect(data.mensaje).to.be.a(\"string\").and.not.empty;",
+              "  pm.expect(data).not.to.have.property(\"clave\");",
+              "  pm.expect(data).not.to.have.property(\"hash\");",
+              "});"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "12 - GET en login",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": "{{baseUrl}}/login"
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"HTTP 405\", () => pm.response.to.have.status(405));",
+              "pm.test(\"Respuesta JSON y contrato\", () => {",
+              "  pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"application/json\");",
+              "  const data = pm.response.json();",
+              "  pm.expect(data.codigo).to.eql(\"METODO_NO_PERMITIDO\");",
+              "  pm.expect(data.ok).to.eql(false);",
+              "  pm.expect(data.mensaje).to.be.a(\"string\").and.not.empty;",
+              "  pm.expect(data).not.to.have.property(\"clave\");",
+              "  pm.expect(data).not.to.have.property(\"hash\");",
+              "});"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "13 - GET en registro",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": "{{baseUrl}}/registro"
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"HTTP 405\", () => pm.response.to.have.status(405));",
+              "pm.test(\"Respuesta JSON y contrato\", () => {",
+              "  pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"application/json\");",
+              "  const data = pm.response.json();",
+              "  pm.expect(data.codigo).to.eql(\"METODO_NO_PERMITIDO\");",
+              "  pm.expect(data.ok).to.eql(false);",
+              "  pm.expect(data.mensaje).to.be.a(\"string\").and.not.empty;",
+              "  pm.expect(data).not.to.have.property(\"clave\");",
+              "  pm.expect(data).not.to.have.property(\"hash\");",
+              "});"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "14 - JSON no admitido",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": "{{baseUrl}}/login",
+        "body": {
+          "mode": "raw",
+          "raw": "{}"
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"HTTP 415\", () => pm.response.to.have.status(415));",
+              "pm.test(\"Respuesta JSON y contrato\", () => {",
+              "  pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"application/json\");",
+              "  const data = pm.response.json();",
+              "  pm.expect(data.codigo).to.eql(\"FORMATO_NO_ADMITIDO\");",
+              "  pm.expect(data.ok).to.eql(false);",
+              "  pm.expect(data.mensaje).to.be.a(\"string\").and.not.empty;",
+              "  pm.expect(data).not.to.have.property(\"clave\");",
+              "  pm.expect(data).not.to.have.property(\"hash\");",
+              "});"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "15 - POST en estado",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "url": "{{baseUrl}}/estado",
+        "body": {
+          "mode": "urlencoded",
+          "urlencoded": []
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"HTTP 405\", () => pm.response.to.have.status(405));",
+              "pm.test(\"Respuesta JSON y contrato\", () => {",
+              "  pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"application/json\");",
+              "  const data = pm.response.json();",
+              "  pm.expect(data.codigo).to.eql(\"METODO_NO_PERMITIDO\");",
+              "  pm.expect(data.ok).to.eql(false);",
+              "  pm.expect(data.mensaje).to.be.a(\"string\").and.not.empty;",
+              "  pm.expect(data).not.to.have.property(\"clave\");",
+              "  pm.expect(data).not.to.have.property(\"hash\");",
+              "});"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "16 - Registro sin confirmacion",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "url": "{{baseUrl}}/registro",
+        "body": {
+          "mode": "urlencoded",
+          "urlencoded": [
+            {
+              "key": "usuario",
+              "value": "{{otro}}",
+              "type": "text"
+            },
+            {
+              "key": "clave",
+              "value": "{{clave}}",
+              "type": "text"
+            }
+          ]
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"HTTP 400\", () => pm.response.to.have.status(400));",
+              "pm.test(\"Respuesta JSON y contrato\", () => {",
+              "  pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"application/json\");",
+              "  const data = pm.response.json();",
+              "  pm.expect(data.codigo).to.eql(\"DATOS_INVALIDOS\");",
+              "  pm.expect(data.ok).to.eql(false);",
+              "  pm.expect(data.mensaje).to.be.a(\"string\").and.not.empty;",
+              "  pm.expect(data).not.to.have.property(\"clave\");",
+              "  pm.expect(data).not.to.have.property(\"hash\");",
+              "});"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "17 - Login normaliza usuario",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "url": "{{baseUrl}}/login",
+        "body": {
+          "mode": "urlencoded",
+          "urlencoded": [
+            {
+              "key": "usuario",
+              "value": " {{usuario}} ",
+              "type": "text"
+            },
+            {
+              "key": "clave",
+              "value": "{{clave}}",
+              "type": "text"
+            }
+          ]
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"HTTP 200\", () => pm.response.to.have.status(200));",
+              "pm.test(\"Respuesta JSON y contrato\", () => {",
+              "  pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"application/json\");",
+              "  const data = pm.response.json();",
+              "  pm.expect(data.codigo).to.eql(\"AUTENTICACION_CORRECTA\");",
+              "  pm.expect(data.ok).to.eql(true);",
+              "  pm.expect(data.mensaje).to.be.a(\"string\").and.not.empty;",
+              "  pm.expect(data).not.to.have.property(\"clave\");",
+              "  pm.expect(data).not.to.have.property(\"hash\");",
+              "});"
+            ]
+          }
+        }
+      ]
+    }
+  ]
+}

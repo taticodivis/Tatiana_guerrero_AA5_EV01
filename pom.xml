@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>com.codivis</groupId>
+  <artifactId>crm</artifactId>
+  <version>1.0.0</version>
+  <packaging>war</packaging>
+  <name>Codivis CRM — AA5-EV01</name>
+  <properties>
+    <!-- El codigo se compila para Java 17; puede ejecutarse con JDK posteriores. -->
+    <java.version>17</java.version>
+    <maven.compiler.release>${java.version}</maven.compiler.release>
+    <!-- Versiones del entorno local de referencia; no instalan estas herramientas. -->
+    <jdk.reference.version>25.0.4.1</jdk.reference.version>
+    <maven.reference.version>3.10.0</maven.reference.version>
+    <tomcat.reference.version>10.1.61</tomcat.reference.version>
+    <servlet.api.version>6.0.0</servlet.api.version>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+  </properties>
+  <dependencies>
+    <dependency>
+      <groupId>jakarta.servlet</groupId>
+      <artifactId>jakarta.servlet-api</artifactId>
+      <version>${servlet.api.version}</version>
+      <scope>provided</scope>
+    </dependency>
+  </dependencies>
+  <build>
+    <finalName>crm</finalName>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <version>3.13.0</version>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-war-plugin</artifactId>
+        <version>3.4.0</version>
+      </plugin>
+    </plugins>
+  </build>
+</project>

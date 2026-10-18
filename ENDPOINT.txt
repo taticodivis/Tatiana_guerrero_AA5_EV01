@@ -1,0 +1,35 @@
+CODIVIS - API DE REGISTRO E INICIO DE SESION
+Aprendiz: Tatiana Guerrero
+Evidencia: GA7-220501096-AA5-EV01
+Servidor local: http://localhost:8086
+Base URL: http://localhost:8086/crm/api
+
+1. GET http://localhost:8086/crm/api/estado
+Sin cuerpo. Respuesta: 200 API_DISPONIBLE.
+
+2. POST http://localhost:8086/crm/api/registro
+Content-Type: application/x-www-form-urlencoded
+Body (en Postman: x-www-form-urlencoded):
+usuario=tatiana_prueba
+clave=PruebaCodivis2026!
+confirmacion=PruebaCodivis2026!
+Respuestas: 201 USUARIO_CREADO; 409 USUARIO_DUPLICADO;
+400 CAMPOS_OBLIGATORIOS o DATOS_INVALIDOS.
+Usuario: 3 a 40 caracteres, letras ASCII, numeros, punto, guion o guion bajo.
+Clave: 12 a 128 caracteres. Confirmacion debe coincidir.
+El usuario se normaliza a minusculas y se quitan espacios de los extremos.
+
+3. POST http://localhost:8086/crm/api/login
+Content-Type: application/x-www-form-urlencoded
+Body: usuario=tatiana_prueba&clave=PruebaCodivis2026!
+Respuestas: 200 AUTENTICACION_CORRECTA; 401 CREDENCIALES_INVALIDAS;
+400 CAMPOS_OBLIGATORIOS.
+Verifica credenciales; no genera token ni crea sesion.
+
+Formato de respuesta de los tres endpoints: application/json; charset=UTF-8.
+Ejemplo: {"ok":true,"codigo":"AUTENTICACION_CORRECTA","mensaje":"Autenticacion satisfactoria."}
+Metodo incorrecto: 405 METODO_NO_PERMITIDO, cabecera Allow con el permitido.
+Formato de cuerpo incorrecto en registro/login: 415 FORMATO_NO_ADMITIDO.
+Error de almacenamiento: 500 ERROR_INTERNO.
+No hay usuarios predeterminados. Los usuarios persisten en data/usuario.properties.
+La API no acepta cuerpos JSON: configurar Body > x-www-form-urlencoded.
