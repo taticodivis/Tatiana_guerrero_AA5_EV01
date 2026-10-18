@@ -16,13 +16,15 @@ API HTTP en Java 17 o superior, Jakarta Servlet 6 y Tomcat 10.1. Las solicitudes
 - Acceso: verifica las credenciales y devuelve un mensaje de éxito o error.
 - Persistencia: cuentas en `data/usuario.properties`, con hashes PBKDF2-HMAC-SHA256, sal aleatoria y 600000 iteraciones.
 - No hay cuentas predeterminadas. No devuelve contraseñas ni hashes al consumidor.
-- El caso verifica credenciales; no emite tokens ni crea sesiones. No incluye interfaz gráfica de login: se consume mediante un cliente HTTP como Postman.
+- El caso verifica credenciales; no emite tokens ni crea sesiones. Incluye una página de registro y acceso que consume la API y muestra sus resultados con SweetAlert2. También se puede consumir desde Postman.
 
 ## Ejecutar
 
 En VS Code, abre esta carpeta y ejecuta `src/main/java/Run.java` con **Run Java**. Detener esa ejecución detiene el servidor.
 
 En Windows también puedes abrir `Iniciar.cmd`. Necesitas un JDK 17 o superior con `java`, `javac` y `jar` disponibles en PATH. Se reutiliza Tomcat de la carpeta hermana `herramientas`; si no existe, el iniciador lo descarga y verifica su SHA512. Esa primera descarga requiere Internet. Maven es una alternativa de compilación, no es necesario para el iniciador.
+
+Página de acceso: http://localhost:8086/crm/
 
 Estado: http://localhost:8086/crm/api/estado
 
@@ -61,3 +63,7 @@ Ejecuta 17 casos HTTP contra la API real y guarda el resultado en `evidencias/re
 El proyecto se versiona con Git. `enlace-repositorio.txt` debe contener la URL real del repositorio publicado antes de entregar. No se incluyen cuentas reales, `.git/`, `target/` ni herramientas externas en el ZIP.
 
 Entrega: `Tatiana_Guerrero_AA5_EV01.zip`. Para esta evidencia la guía no exige video ni documento con capturas; corresponden a AA5-EV02.
+
+## Alertas visuales
+
+La interfaz usa SweetAlert2 11.26.25 desde jsDelivr (https://sweetalert2.github.io/). Necesita Internet para cargar esa biblioteca; si no está disponible, el mensaje sigue visible en la página. Los éxitos y errores provienen de la API real. No se crea sesión ni se redirige a un área privada tras autenticar.

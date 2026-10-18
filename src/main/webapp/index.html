@@ -1,0 +1,34 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Codivis · Acceso</title>
+  <link rel="stylesheet" href="assets/acceso.css">
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.26.25/dist/sweetalert2.all.min.js" defer></script>
+  <script src="assets/acceso.js" defer></script>
+</head>
+<body>
+  <main class="card">
+    <a class="brand" href="./">codivis<span>SERVICIOS WEB</span></a>
+    <p class="eyebrow">TU ESPACIO DE ACCESO</p>
+    <h1 id="titulo">Iniciar sesión</h1>
+    <p id="introduccion">Ingresa tu usuario y contraseña.</p>
+    <form id="acceso" action="api/login" method="post">
+      <label for="usuario">Usuario</label>
+      <input id="usuario" name="usuario" autocomplete="username" required minlength="3" maxlength="40" placeholder="Tu nombre de usuario">
+      <label for="clave">Contraseña</label>
+      <div class="password"><input id="clave" name="clave" type="password" autocomplete="current-password" required maxlength="128"><button id="mostrar" type="button" aria-controls="clave" aria-pressed="false">Mostrar</button></div>
+      <div id="confirmacion-grupo" hidden>
+        <label for="confirmacion">Confirmar contraseña</label>
+        <input id="confirmacion" name="confirmacion" type="password" autocomplete="new-password" maxlength="128" disabled>
+        <small>Usa de 12 a 128 caracteres. Usuario: de 3 a 40 letras, números, puntos o guiones.</small>
+      </div>
+      <button class="primary" id="enviar" type="submit">Entrar</button>
+    </form>
+    <p id="resultado" role="status" aria-live="polite"></p>
+    <p class="switch"><span id="pregunta">¿No tienes cuenta?</span> <button id="cambiar" type="button">Registrarse</button></p>
+    <noscript>Activa JavaScript para usar esta página y ver las alertas.</noscript>
+  </main>
+</body>
+</html>
