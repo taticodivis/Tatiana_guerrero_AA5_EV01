@@ -10,7 +10,7 @@ El apartado 3.1.5 solicita diseñar y codificar un servicio web para registro e 
 
 ## Solución realizada
 
-API HTTP en Java 17 o superior, Jakarta Servlet 6 y Tomcat 10.1. Las solicitudes de registro y acceso usan formularios `application/x-www-form-urlencoded`; las respuestas son JSON. El diseño se explica en [DISENO.md](DISENO.md) y las rutas en [ENDPOINT.txt](ENDPOINT.txt).
+API HTTP en Java 17 o superior con Spring Boot y Spring MVC, con servidor integrado. Las solicitudes de registro y acceso usan formularios `application/x-www-form-urlencoded`; las respuestas son JSON. El diseño se explica en [DISENO.md](DISENO.md) y las rutas en [ENDPOINT.txt](ENDPOINT.txt).
 
 - Registro: valida usuario, contraseña y confirmación; rechaza duplicados.
 - Acceso: verifica las credenciales y devuelve un mensaje de éxito o error.
@@ -22,7 +22,7 @@ API HTTP en Java 17 o superior, Jakarta Servlet 6 y Tomcat 10.1. Las solicitudes
 
 En VS Code, abre esta carpeta y ejecuta `src/main/java/Run.java` con **Run Java**. Detener esa ejecución detiene el servidor.
 
-En Windows también puedes abrir `Iniciar.cmd`. Necesitas un JDK 17 o superior con `java`, `javac` y `jar` disponibles en PATH. Se reutiliza Tomcat de la carpeta hermana `herramientas`; si no existe, el iniciador lo descarga y verifica su SHA512. Esa primera descarga requiere Internet. Maven es una alternativa de compilación, no es necesario para el iniciador.
+En Windows también puedes abrir `Iniciar.cmd`. Necesitas un JDK 17 o superior y Maven. El iniciador reutiliza Maven y su repositorio de dependencias de la carpeta hermana `herramientas`, igual que AA3; si no existe, usa `mvn.cmd` en PATH. La primera descarga de dependencias requiere Internet. Spring Boot incorpora su servidor y no necesita instalar Tomcat por separado.
 
 Página de acceso: http://localhost:8086/crm/
 
@@ -58,7 +58,7 @@ Ejecuta 17 casos HTTP contra la API real y guarda el resultado en `evidencias/re
 
 ## Estructura y versionamiento
 
-`ApiServlet.java` procesa HTTP y genera respuestas; `UsuarioRepository.java` valida y persiste cuentas; `Run.java` permite iniciar desde VS Code. Las clases contienen comentarios y se organizan en paquetes por responsabilidad. Se utilizan nombres de clases en PascalCase, métodos en camelCase y constantes en MAYUSCULAS.
+`ApiController.java` procesa HTTP y genera respuestas; `ErroresApi.java` mantiene los errores JSON; `UsuarioRepository.java` valida y persiste cuentas; `Run.java` permite iniciar desde VS Code. La interfaz está en `src/main/resources/static/`. Las clases contienen comentarios y se organizan en paquetes por responsabilidad. Se utilizan nombres de clases en PascalCase, métodos en camelCase y constantes en MAYUSCULAS.
 
 El proyecto se versiona con Git. `enlace-repositorio.txt` debe contener la URL real del repositorio publicado antes de entregar. No se incluyen cuentas reales, `.git/`, `target/` ni herramientas externas en el ZIP.
 

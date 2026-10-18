@@ -25,13 +25,13 @@ La confirmación de contraseña es una decisión de diseño del registro; el cas
 Cliente HTTP / Postman
         | solicitud de formulario
         v
-Tomcat -> ApiServlet -> UsuarioRepository -> data/usuario.properties
+Spring Boot -> ApiController -> UsuarioRepository -> data/usuario.properties
         | respuesta JSON
         v
 Cliente HTTP / Postman
 ```
 
-El servlet separa el contrato HTTP de la validación y persistencia. El repositorio conserva un mapa de cuentas y sincroniza el registro para impedir altas duplicadas concurrentes dentro de la misma instancia.
+El controlador REST separa el contrato HTTP de la validación y persistencia. El repositorio conserva un mapa de cuentas y sincroniza el registro para impedir altas duplicadas concurrentes dentro de la misma instancia.
 
 ## Datos y validaciones
 

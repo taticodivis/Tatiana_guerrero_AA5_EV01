@@ -1,7 +1,7 @@
 ﻿{
-    "fecha":  "2026-10-18T16:58:44.2134551-05:00",
+    "fecha":  "2026-10-18T17:14:52.2058390-05:00",
     "herramienta":  "PowerShell HttpClient (comprobacion previa; pendiente ejecutar en Postman)",
-    "baseUrl":  "http://localhost:8086/crm/api",
+    "baseUrl":  "http://localhost:18086/crm/api",
     "resultados":  [
                        {
                            "prueba":  "01 - Estado",
