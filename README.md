@@ -60,7 +60,7 @@ Ejecuta 17 casos HTTP contra la API real y guarda el resultado en `evidencias/re
 
 `ApiController.java` procesa HTTP y genera respuestas; `ErroresApi.java` mantiene los errores JSON; `UsuarioRepository.java` valida y persiste cuentas; `Run.java` permite iniciar desde VS Code. La interfaz está en `src/main/resources/static/`. Las clases contienen comentarios y se organizan en paquetes por responsabilidad. Se utilizan nombres de clases en PascalCase, métodos en camelCase y constantes en MAYUSCULAS.
 
-El proyecto se versiona con Git. `enlace-repositorio.txt` debe contener la URL real del repositorio publicado antes de entregar. No se incluyen cuentas reales, `.git/`, `target/` ni herramientas externas en el ZIP.
+El proyecto se versiona con Git. Repositorio: https://github.com/taticodivis/Tatiana_guerrero_AA5_EV01. El enlace también se incluye en `enlace-repositorio.txt`. No se incluyen cuentas reales, `.git/`, `target/` ni herramientas externas en el ZIP.
 
 Entrega: `Tatiana_Guerrero_AA5_EV01.zip`. Para esta evidencia la guía no exige video ni documento con capturas; corresponden a AA5-EV02.
 
